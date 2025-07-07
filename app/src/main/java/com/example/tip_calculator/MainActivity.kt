@@ -28,14 +28,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+//            TipCalculatorTheme {
+//                TipCalculatorApp()
+//            }
             TipCalculatorTheme {
-                TipCalculatorApp()
+                val navController = rememberNavController()
+                TipCalculatorNavHost(navController)
             }
         }
     }
@@ -43,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TipCalculatorApp() {
+fun TipCalculatorApp(navController: NavController) {
     var amountInput by remember { mutableStateOf("") }
 
     val amount = amountInput.toDoubleOrNull() ?: 0.0
@@ -74,7 +80,9 @@ fun TipCalculatorApp() {
             TopAppBar(
                 title = { Text("Tip Calculator") },
                 actions = {
-                    IconButton(onClick = { /* TODO: Open Settings */ }) {
+                    IconButton(onClick = {
+                        navController.navigate("settings")
+                    }) {
                         Icon(imageVector = Icons.Default.Settings, contentDescription = "Settings")
                     }
                 },
@@ -260,7 +268,11 @@ fun TipCalculatorApp() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewTipCalculator() {
+//    TipCalculatorTheme {
+//        TipCalculatorApp()
+//    }
     TipCalculatorTheme {
-        TipCalculatorApp()
+        val navController = rememberNavController()
+        TipCalculatorApp(navController = navController)
     }
 }
